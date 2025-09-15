@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Analytics Dashboard — Demo</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <div class="mark">AD</div>
+        <div>
+          <div style="font-weight:700">AstraDash</div>
+          <div style="font-size:12px;color:var(--muted)">XLIT Analytics • Insights</div>
+        </div>
+      </div>
+
+      <button class="toggle-btn" id="collapseBtn" title="Toggle sidebar">☰</button>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button><span>📊</span><span class="nav-label">Overview</span></button>
+        <button><span>🧭</span><span class="nav-label">User Growth</span></button>
+        <button><span>💸</span><span class="nav-label">Revenue</span></button>
+        <button><span>🌍</span><span class="nav-label">Regions</span></button>
+        <button><span>⚙️</span><span class="nav-label">Settings</span></button>
+      </nav>
+
+      <div style="margin-top:18px;font-size:12px;color:var(--muted)">
+        <div>Theme</div>
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <button class="accent-pill" style="padding:6px 8px;font-size:12px">Pro</button>
+          <button style="padding:6px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.05)">Basic</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- topbar -->
+      <header class="topbar">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#667a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#667a8a" stroke-width="2"/></svg>
+            <input id="searchInput" placeholder="Search reports, users..." style="border:0;background:transparent;outline:none;font-size:14px" />
+          </div>
+          <div class="small-muted">Last update: <strong id="lastUpdate">now</strong></div>
+        </div>
+
+        <div class="profile">
+          <button title="Notifications" style="border:0;background:transparent;cursor:pointer">🔔</button>
+          <div class="avatar">OD</div>
+        </div>
+      </header>
+
+      <!-- grid -->
+      <section class="grid">
+
+        <!-- Revenue overview -->
+        <div class="card revenue glass-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700;font-size:18px">Revenue Overview</div>
+              <div class="small-muted">Animated line graph with smooth transitions</div>
+            </div>
+            <div class="controls">
+              <button id="updateRevenue" class="accent-pill">Update Data</button>
+              <button id="toggleDetail" title="Flip card" style="border:0;background:transparent;cursor:pointer">🔁</button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="flip-wrap">
+            <div class="flip-card" id="revenueFlip">
+              <div class="flip-front">
+                <canvas id="revenueChart" height="140"></canvas>
+              </div>
+              <div class="flip-back card">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-weight:700">Revenue details</div>
+                    <div class="small-muted">Monthly breakdown, top channels</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="small-muted">This month</div>
+                    <div style="font-weight:800;font-size:20px">$<span id="revNow">124,800</span></div>
+                  </div>
+                </div>
+                <div style="margin-top:16px">
+                  <div style="display:flex;gap:12px">
+                    <div style="flex:1"><div class="small-muted">Direct</div><div style="font-weight:700">40%</div></div>
+                    <div style="flex:1"><div class="small-muted">Ads</div><div style="font-weight:700">30%</div></div>
+                    <div style="flex:1"><div class="small-muted">Organic</div><div style="font-weight:700">30%</div></div>
+                  </div>
+                  <div class="accent-line"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI column -->
+        <div class="kpis">
+          <div class="card glass-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="small-muted">Active Users</div>
+                <div class="count" id="kpiUsers">0</div>
+                <div class="small-muted">vs last week</div>
+              </div>
+              <div style="text-align:right">
+                <div class="small-muted">Conversion</div>
+                <div style="font-weight:700">4.8%</div>
+                <div style="margin-top:8px"><div class="accent-pill">+3.2%</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card glass-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="small-muted">Revenue</div>
+                <div class="count" id="kpiRev">$0</div>
+                <div class="small-muted">Monthly target</div>
+              </div>
+              <div style="text-align:right">
+                <div class="small-muted">Avg. Order</div>
+                <div style="font-weight:700">$89.20</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card glass-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="small-muted">New Signups</div>
+                <div class="count" id="kpiSignups">0</div>
+                <div class="small-muted">Today</div>
+              </div>
+              <div style="text-align:right">
+                <div class="small-muted">Bounce rate</div>
+                <div style="font-weight:700">23%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User growth bar -->
+        <div class="card bar">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700">User Growth</div>
+              <div class="small-muted">Bar chart with transitions</div>
+            </div>
+            <div class="small-muted">Last 12 months</div>
+          </div>
+          <div style="margin-top:12px"><canvas id="userBar" height="120"></canvas></div>
+        </div>
+
+        <!-- Sales by region (donut) -->
+        <div class="card donut">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700">Sales by Region</div>
+              <div class="small-muted">Interactive donut chart</div>
+            </div>
+            <div style="font-weight:700">Total</div>
+          </div>
+          <div style="margin-top:12px"><canvas id="regionDonut" height="160"></canvas></div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap" id="regionLegend"></div>
+        </div>
+
+        <!-- Recent transactions -->
+        <div class="card transactions">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700">Recent Transactions</div>
+              <div class="small-muted">Animated table with hover highlights</div>
+            </div>
+            <div class="small-muted">Showing latest 6</div>
+          </div>
+          <div style="margin-top:12px;overflow:auto">
+            <table aria-label="Recent transactions">
+              <thead>
+                <tr><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+              </thead>
+              <tbody id="txBody">
+                <!-- rows created by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Map / extra card (placeholder donut breakdown) -->
+        <div class="card map-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700">Engagement Map</div>
+              <div class="small-muted">Heat map placeholder / regional breakdown</div>
+            </div>
+            <div class="small-muted">Realtime</div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="height:140px;border-radius:12px;background:linear-gradient(90deg,#eef7ff,#f7f7ff);display:flex;align-items:center;justify-content:center;color:var(--muted)">
+              (Interactive map or SVG could be plugged here)
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
